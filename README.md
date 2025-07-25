@@ -4,4 +4,4 @@ Git and GitHub from scratch.
 <br>
 DAY 2:
 <br>
-My First Repo.
+First Repo.
