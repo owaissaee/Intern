@@ -1,0 +1,240 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Login - Resume Portal</title>
+
+    <link href="{% static 'img/favicon.png' %}" rel="icon">
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --card-dark: #1e1e1e;
+            --text-dark: #f1f1f1;
+            --bg-light: #f8f9fa;
+            --card-light: #ffffff;
+            --text-light: #212529;
+            --accent: #00bcd4;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        [data-theme="dark"] body,
+        [data-theme="dark"] .container,
+        [data-theme="dark"] .section {
+            background-color: var(--bg-dark) !important;
+            color: var(--text-dark) !important;
+        }
+
+        [data-theme="light"] body,
+        [data-theme="light"] .container,
+        [data-theme="light"] .section {
+            background-color: var(--bg-light) !important;
+            color: var(--text-light) !important;
+        }
+
+        .card {
+            background-color: var(--card-dark);
+            color: var(--text-dark);
+            border: none;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        [data-theme="light"] .card {
+            background-color: var(--card-light);
+            color: var(--text-light);
+        }
+
+        .form-control {
+            background-color: #2c2c2c;
+            color: #fff;
+            border: 1px solid #444;
+            transition: all 0.3s ease-in-out;
+        }
+
+        [data-theme="light"] .form-control {
+            background-color: #fff;
+            color: #000;
+            border-color: #ccc;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #0097a7;
+        }
+
+        .fade-input {
+            animation: fadeInUp 0.7s ease-in-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--accent);
+            border: none;
+            padding: 6px 14px;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .link-info {
+            transition: color 0.3s ease;
+        }
+
+        [data-theme="dark"] .link-info {
+            color: #80deea;
+        }
+
+        [data-theme="dark"] .link-info:hover {
+            color: #4dd0e1;
+        }
+
+        [data-theme="light"] .link-info:hover {
+            color: #0288d1;
+        }
+
+        .input-group-text {
+            background-color: transparent;
+            border: 1px solid #444;
+        }
+
+        [data-theme="light"] .input-group-text {
+            border-color: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+<main>
+    <div class="container">
+        <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+        <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+                        <div class="d-flex justify-content-center py-4">
+                            <a href="/" class="logo d-flex align-items-center w-auto">
+                                <img src="{% static 'img/logo1.png' %}" alt="">
+                                <span class="d-none d-lg-block ms-2">Resume Portal</span>
+                            </a>
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="pt-4 pb-2 text-center">
+                                    <h5 class="card-title fs-4">Login to Your Account</h5>
+                                    <p class="small">Enter your credentials to log in</p>
+                                </div>
+
+                                {% if form.errors %}
+                                <div class="alert alert-danger">
+                                    Please correct the error{% if form.errors|length > 1 %}s{% endif %} below.
+                                </div>
+                                {% endif %}
+
+                                <form method="post" action="{% url 'account_login' %}" class="row g-3 needs-validation" novalidate>
+                                    {% csrf_token %}
+                                    <div class="col-12 fade-input">
+                                        <label for="yourUsername" class="form-label">Email / Username</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="email-addon">
+                                                <i class="bi bi-at"></i>
+                                            </span>
+                                            <input type="text" name="login" class="form-control" id="yourUsername" required aria-describedby="email-addon">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 fade-input">
+                                        <label for="yourPassword" class="form-label">Password</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="password-addon">
+                                                <i class="bi bi-key-fill"></i>
+                                            </span>
+                                            <input type="password" name="password" class="form-control" id="yourPassword" required aria-describedby="password-addon">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 fade-input">
+                                        <button class="btn btn-primary w-100" type="submit">Login</button>
+                                    </div>
+                                </form>
+
+                                <div class="col-12 mt-3 text-center fade-input">
+                                    <p class="small mb-1">
+                                        <a href="{% url 'account_reset_password' %}" class="link-info">Forgot password?</a>
+                                    </p>
+                                    <p class="small mb-0">
+                                        Don't have an account? <a href="{% url 'account_signup' %}" class="link-info">Create one</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="credits small fade-input text-center">
+                            Designed by <a href="https://bootstrapmade.com/" class="link-info">BootstrapMade</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<script>
+    function toggleTheme() {
+        const html = document.documentElement;
+        html.dataset.theme = html.dataset.theme === 'light' ? 'dark' : 'light';
+        localStorage.setItem('theme', html.dataset.theme);
+    }
+
+    // Load theme from localStorage on page load
+    window.onload = () => {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.dataset.theme = savedTheme;
+        }
+    }
+</script>
+
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+{% extends 'resume_base.html' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="pagetitle">
+  <h1>Edit Profile</h1>
+</div>
+
+<section class="section">
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+              {% endfor %}
+            {% endif %}
+
+            <div class="mb-3">
+              <label class="form-label">First Name</label>
+              <input type="text" name="first_name" class="form-control" value="{{ user.first_name }}">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Last Name</label>
+              <input type="text" name="last_name" class="form-control" value="{{ user.last_name }}">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Phone</label>
+              <input type="text" name="phone" class="form-control" value="{{ user.phone }}">
+            </div>
+
+            <!-- Change Password Button -->
+            <div class="mb-3">
+              <label class="form-label">Change Password</label><br>
+              <a href="{% url 'account_change_password' %}" class="btn btn-outline-warning btn-sm">
+                <i class="bi bi-shield-lock"></i> Change Password
+              </a>
+            </div>
+
+            <!-- Email Verification Reminder -->
+            {% with user.emailaddress_set.first as email %}
+              {% if email and not email.verified %}
+                <div class="alert alert-warning">
+                  Your email is not verified.
+                  <a href="{% url 'account_email' %}" class="btn btn-sm btn-primary">Verify Now</a>
+                </div>
+              {% endif %}
+            {% endwith %}
+
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="{% url 'settings' %}" class="btn btn-secondary">Cancel</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

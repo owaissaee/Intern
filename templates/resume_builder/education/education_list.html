@@ -1,0 +1,22 @@
+ {% extends 'resume_base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Education List</h2>
+    <a href="{% url 'education_add' %}" class="btn btn-success mb-3">Add New Education</a>
+
+    {% if education_list %}
+        <ul class="list-group">
+            {% for edu in education_list %}
+                <li class="list-group-item">
+                    <h5>{{ edu.degree }}</h5>
+                    <p>{{ edu.institution }} | {{ edu.start_date }} - {{ edu.end_date|default:"Present" }}</p>
+                    <p>{{ edu.description }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No education entries found.</p>
+    {% endif %}
+</div>
+{% endblock %}
